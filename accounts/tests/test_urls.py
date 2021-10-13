@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 from ..views import TopView, SignUpView, ProfileView
 
-
 class UrlTests(TestCase):
   # top画面へのurlでアクセスする時のテスト
   def test_top_url(self):

@@ -8,9 +8,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
 class TopView(TemplateView):
   template_name = 'accounts/top.html'
+
 
 class SignUpView(FormView):
   form_class = SignUpForm

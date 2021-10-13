@@ -52,6 +52,7 @@ class SuccessSignUpTests(TestCase):
     user = response.context.get('user')
     self.assertTrue(user.is_authenticated)
 
+
 class FailSignUpTests(TestCase):
   def setUp(self):
     url = reverse('accounts:signup')
