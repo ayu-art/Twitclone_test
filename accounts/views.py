@@ -33,7 +33,7 @@ class SignUpView(FormView):
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
-  model = User
   template_name = 'accounts/profile.html'
+
   def get_queryset(self):
-     return User.objects.get(id=self.request.user.id)
+    return User.objects.get(id=self.request.user.id)

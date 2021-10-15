@@ -83,16 +83,20 @@ class FailSignUpTests(TestCase):
     self.response2 = self.client.post(url, data2)
     self.response3 = self.client.post(url, data3)
 
-  def test_signup_status_code(self):
+  # 無効なメールアドレスの確認
+  def test_invalid_email(self):
     self.assertEquals(self.response1.status_code, 200)
-    self.assertEquals(self.response2.status_code, 200)
-    self.assertEquals(self.response3.status_code, 200)
-
-  # エラーが発生することを確認
-  def test_form_errors(self):
     form1 = self.response1.context.get('form')
     self.assertTrue(form1.errors)
+
+  # 異なるパスワードを入れた時の確認
+  def test_invalid_password(self):
+    self.assertEquals(self.response2.status_code, 200)
     form2 = self.response2.context.get('form')
     self.assertTrue(form2.errors)
+
+  # 記入漏れがあるときの確認
+  def test_empty_form(self):
+    self.assertEquals(self.response3.status_code, 200)
     form3 = self.response3.context.get('form')
     self.assertTrue(form3.errors)
