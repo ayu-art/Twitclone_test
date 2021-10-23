@@ -12,14 +12,26 @@
         <tr><td>パスワード</td><td>************</td></tr>
       </table>
       <p>※パスワードはセキュリティ上伏せ字になっています。</p>
-      <form class="ui form" action="" method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-        {{ field.as_hidden }}
-        {% endfor %}
-        <button class="ui button" name="next" value="back" type="submit">修正</button>
-        <button class="ui orange button" name="next" value="regist" type="submit">登録</button>
-      </form>
+      <table><tr>
+        <td>
+          <form class="ui form" action="{% url 'accounts:data_input' %}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            {{ field.as_hidden }}
+            {% endfor %}
+            <button class="ui button" type="submit">修正</button>
+          </form>
+        </td>
+        <td>
+          <form class="ui form" action="{% url 'accounts:data_save' %}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            {{ field.as_hidden }}
+            {% endfor %}
+            <button class="ui orange button" type="submit">登録</button>
+          </form>
+        </td>
+      </tr></table>
     </div>
   </div>
 </div>
