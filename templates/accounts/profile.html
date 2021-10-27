@@ -1,0 +1,29 @@
+{% extends 'accounts/base.html' %}
+{% block title %}プロフィール{% endblock %}
+{% block subheader %}{% endblock %}
+{% block content %}
+<div class="ui text container">
+    <div class="content">
+        <div class="header"><h2>ユーザー情報</h2></div><br>
+        <table class="ui celled padded table">
+          <tr>
+            <td>ユーザー名</td>
+            <td>{{ user.username }}</td>
+          </tr>
+          <tr>
+            <td>メールアドレス</td>
+            <td>{{ user.email }}</td>
+          </tr>
+          <tr>
+            <td>住んでる場所</td>
+            <td>{% if user.place %}{{ user.place }}{% else %}未設定{% endif %}</td>
+          </tr>
+          <tr>
+            <td>自己紹介</td>
+            <td>{% if user.introduce_text %}{{ user.introduce_text }}{% else %}未設定{% endif %}</td>
+          </tr>
+        </table>
+    </div><br>
+  <a class="ui button" href="">登録情報変更</a>
+</div>
+{% endblock %}

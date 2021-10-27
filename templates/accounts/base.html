@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
+  <link rel="icon" href="{% static '/images/twitter_icon.ico' %}">
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  <div class="ui blue huge stackable inverted menu">
+    <div class="container">
+      <h2 class="header item"><a href="{% url 'accounts:top' %}">
+          投稿サイト
+      </a></h2>
+      {% block subheader %}<i class="item">サブ情報</i>{% endblock %}
+    </div>
+    <div class="right menu">
+      {% if user.is_authenticated %}
+        <a class="item" href="{% url 'accounts:profile' %}">ユーザー情報</a>
+        <a class="item" href="">ログアウト</a>
+      {% else %}
+        <a class="item" href="">ログイン</a>
+        <a class="item" href="{% url 'accounts:data_input' %}">新規登録</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="ui container" style="min-height: 100vh;">
+    {% block content %}
+    {% if user.is_authenticated %}
+      <h4 >ようこそ！<span style="color:dodgerblue;">{{ user.username }} </span>さん！</h4>
+      <div class="ui divider"></div>
+    {% endif %}
+    {% endblock %}
+  </div>
+</body>
+</html>
