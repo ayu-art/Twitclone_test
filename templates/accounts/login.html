@@ -1,0 +1,32 @@
+{% extends 'accounts/base.html' %}
+{% block title %}ログイン{% endblock %}
+{% block subheader %}{% endblock %}
+{% block content %}
+<div class="ui text container">
+  <div class="ui segment">
+    <div class="content">
+      <div class="ui header">ログイン</div><br>
+      <form class="ui form" action="" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="field">
+            {{ field.label_tag }}{{ field }}{{ field.help_text }}
+          </div>
+          <div class="ui form error"> 
+            {% for error in field.errors %}
+            <div class="ui error message">{{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        <div class="ui form error">
+          {% for error in form.non_field_errors %}
+            <div class="ui error message">{{ error }}</div>
+          {% endfor %}
+        </div>
+        <button class="ui orange button" type="submit">ログイン</button>
+        <input type="hidden" name="next" value="{{ next }}">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

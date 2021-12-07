@@ -31,6 +31,9 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'accounts.User'
 
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'accounts:top'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

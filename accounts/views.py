@@ -3,7 +3,7 @@ from accounts.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
 from django.views.generic import TemplateView, FormView, CreateView
-from .forms import SignUpForm
+from .forms import LoginForm, SignUpForm
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView, LogoutView
@@ -55,3 +55,8 @@ class UserDataSave(FormView):
 
 class ProfileView(LoginRequiredMixin, TemplateView):
   template_name = 'accounts/profile.html'
+
+
+class LoginView(LoginView):
+  form_class = LoginForm
+  template_name = 'accounts/login.html'
