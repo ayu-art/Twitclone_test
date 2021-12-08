@@ -60,3 +60,9 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 class LoginView(LoginView):
   form_class = LoginForm
   template_name = 'accounts/login.html'
+
+class LogoutConfirmView(TemplateView):
+  template_name = 'accounts/logout_confirm.html'
+
+class LogoutView(LogoutView):
+  template_name = 'accounts/logout.html'
