@@ -9,6 +9,6 @@ urlpatterns = [
   path('data_save/', views.UserDataSave.as_view(), name='data_save'),
   path('profile/', views.ProfileView.as_view(), name='profile'),
   path('login/', views.LoginView.as_view(), name='login'),
-  path('logout_comfirm/', views.LogoutConfirmView.as_view(), name='logout_confirm'),
+  path('logout_confirm/', views.LogoutConfirmView.as_view(), name='logout_confirm'),
   path('logout/', views.LogoutView.as_view(), name='logout'),
 ]
