@@ -14,9 +14,9 @@ class TopTests(TestCase):
   
 class SuccessSignUpTests(TestCase):
   def setUp(self):
-    url1 = reverse('accounts:data_input')
-    url2 = reverse('accounts:data_confirm')
-    url3 = reverse('accounts:data_save')
+    url1 = reverse('accounts:data-input')
+    url2 = reverse('accounts:data-confirm')
+    url3 = reverse('accounts:data-save')
     data= {
       'username': 'kinoko',
       'email': 'testemail49@gmail.com',
@@ -27,7 +27,7 @@ class SuccessSignUpTests(TestCase):
     self.response1 = self.client.post(url1, data)
     self.response2 = self.client.post(url2, data)
     self.response3 = self.client.post(url3, data)
-    self.topurl = reverse('accounts:top')
+    self.top_url = reverse('accounts:top')
 
   # 確認画面にいけるかの確認
   def test_post_confirm_status_code(self):
@@ -36,7 +36,7 @@ class SuccessSignUpTests(TestCase):
 
   # 登録ボタンを押したときにリダイレクトして最初のページに戻るかの確認。
   def test_post_regist_redirect(self):
-    self.assertRedirects(self.response３, self.topurl ,status_code=302, target_status_code=200)
+    self.assertRedirects(self.response3, self.top_url ,status_code=302, target_status_code=200)
 
   def test_post_back_status_code(self):
     self.assertEqual(self.response1.status_code, 200)
@@ -48,14 +48,14 @@ class SuccessSignUpTests(TestCase):
 
   # 新規登録してユーザーが認証済みになったかの確認
   def test_user_authenticated(self):
-    response = self.client.get(self.topurl)
+    response = self.client.get(self.top_url)
     user = response.context.get('user')
     self.assertTrue(user.is_authenticated)
 
 
 class FailSignUpTests(TestCase):
   def setUp(self):
-    url = reverse('accounts:data_confirm')
+    url = reverse('accounts:data-confirm')
     # data1は無効なメールアドレス、data2は異なるパスワード、data3は記入漏れがある場合のデータ
     data1 = {
       'username': 'kinoko',
@@ -126,27 +126,27 @@ class SuccessLoginTests(TestCase):
 class FailLoginTests(TestCase):
   def setUp(self):
     self.user = User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
-    login_url = reverse('accounts:login')
+    self.login_url = reverse('accounts:login')
     # data1は異なるメールアドレス、data2は記入漏れがある場合
-    data1 = {
+    self.data1 = {
       'username': 'kinoko000@gmail.com',
       'password': 'kinopiko12'
     }
-    data2 = {
+    self.data2 = {
       'username': 'kinoko123@gmail.com',
       'password': ''
     }
-    self.response_email = self.client.post(login_url, data1)
-    self.response_empty_form = self.client.post(login_url, data2)
 
   # 認証されないとエラーが出て、top.htmlにリダイレクトされないことの確認
   def test_different_email(self):
+    self.response_email = self.client.post(self.login_url, self.data1)
     self.assertEquals(self.response_email.status_code, 200)
     form1 = self.response_email.context.get('form')
     self.assertTrue(form1.errors)
     self.assertTemplateUsed(self.response_email, 'accounts/login.html')
 
   def test_password_empty(self):
+    self.response_empty_form = self.client.post(self.login_url, self.data2)
     self.assertEquals(self.response_empty_form.status_code, 200)
     form1 = self.response_empty_form.context.get('form')
     self.assertTrue(form1.errors)
@@ -157,7 +157,7 @@ class LogoutTests(TestCase):
   def setUp(self):
     self.user = User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
     self.login_user = self.client.login(username='kinoko', password='kinopiko12')
-    url1 = reverse('accounts:logout_confirm')
+    url1 = reverse('accounts:logout-confirm')
     url2 = reverse('accounts:logout')
     self.response_confirm = self.client.get(url1)
     self.response_logout = self.client.get(url2)
