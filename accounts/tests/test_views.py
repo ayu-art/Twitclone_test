@@ -104,22 +104,22 @@ class FailSignUpTests(TestCase):
 class SuccessLoginTests(TestCase):
   def setUp(self):
     self.user = User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
-    login_url = reverse('accounts:login')
-    data = {
+    self.login_url = reverse('accounts:login')
+    self.top_url = reverse('accounts:top')
+    self.data = {
       'username': 'kinoko123@gmail.com',
       'password': 'kinopiko12'
     }
-    self.response_get = self.client.get(login_url)
-    self.response_post = self.client.post(login_url, data)
-    self.top_url = reverse('accounts:top')
 
   # データを渡さずloginviewにアクセスされたとき、login.htmlが表示されるか
   def test_login_status_code(self):
+    self.response_get = self.client.get(self.login_url)
     self.assertEqual(self.response_get.status_code, 200)
     self.assertTemplateUsed(self.response_get, 'accounts/login.html')
 
   # ログインした後にtopページにリダイレクトされるか
   def test_login_redirect(self):
+    self.response_post = self.client.post(self.login_url, self.data)
     self.assertRedirects(self.response_post, self.top_url ,status_code=302, target_status_code=200)
 
 
@@ -157,18 +157,18 @@ class LogoutTests(TestCase):
   def setUp(self):
     self.user = User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
     self.login_user = self.client.login(username='kinoko', password='kinopiko12')
-    url1 = reverse('accounts:logout-confirm')
-    url2 = reverse('accounts:logout')
-    self.response_confirm = self.client.get(url1)
-    self.response_logout = self.client.get(url2)
+    self.url1 = reverse('accounts:logout-confirm')
+    self.url2 = reverse('accounts:logout')
 
   # ログアウトの確認画面にいけるかの確認
   def test_logout_confirm(self):
+    self.response_confirm = self.client.get(self.url1)
     self.assertEqual(self.response_confirm.status_code, 200)
     self.assertTemplateUsed(self.response_confirm, 'accounts/logout_confirm.html')
 
   # ログアウトが出来たかの確認
   def test_logout(self):
+    self.response_logout = self.client.get(self.url2)
     self.assertEqual(self.response_logout.status_code, 200)
     self.assertTemplateUsed(self.response_logout, 'accounts/logout.html')
     self.assertFalse('username' in self.response_logout)
