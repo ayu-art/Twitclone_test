@@ -1,12 +1,12 @@
 {% extends 'accounts/base.html' %}
-{% block title %}新規登録画面{% endblock %}
+{% block title %}ログイン{% endblock %}
 {% block subheader %}{% endblock %}
 {% block content %}
 <div class="ui text container">
   <div class="ui segment">
     <div class="content">
-      <div class="header"><h3>新規登録</h3></div>
-      <form class="ui form" action="{% url 'accounts:data-confirm' %}" method="POST">
+      <div class="ui header">ログイン</div><br>
+      <form class="ui form" action="" method="POST">
         {% csrf_token %}
         {% for field in form %}
           <div class="field">
@@ -14,16 +14,18 @@
           </div>
           <div class="ui form error"> 
             {% for error in field.errors %}
-              <div class="ui error message">{{ error }}</div>
+            <div class="ui error message">{{ error }}</div>
             {% endfor %}
           </div>
         {% endfor %}
-        {% for error in form.non_field_errors %}
-          <div class="ui error message">{{ error }}</div>
-        {% endfor %}
-        <button class="ui orange button" type="submit">確認</button>
+        <div class="ui form error">
+          {% for error in form.non_field_errors %}
+            <div class="ui error message">{{ error }}</div>
+          {% endfor %}
+        </div>
+        <button class="ui orange button" type="submit">ログイン</button>
       </form>
     </div>
   </div>
 </div>
-{% endblock %}
+{% endblock content %}
