@@ -5,7 +5,7 @@ from accounts.models import User
 
 class TopTests(TestCase):
   def setUp(self):
-    url = reverse('accounts:top')
+    url = reverse('blog:top')
     self.response = self.client.get(url)
 
   def test_top_status_code(self):
@@ -27,7 +27,7 @@ class SuccessSignUpTests(TestCase):
     self.response1 = self.client.post(url1, data)
     self.response2 = self.client.post(url2, data)
     self.response3 = self.client.post(url3, data)
-    self.top_url = reverse('accounts:top')
+    self.top_url = reverse('blog:top')
 
   # 確認画面にいけるかの確認
   def test_post_confirm_status_code(self):
@@ -105,7 +105,7 @@ class SuccessLoginTests(TestCase):
   def setUp(self):
     self.user = User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
     self.login_url = reverse('accounts:login')
-    self.top_url = reverse('accounts:top')
+    self.top_url = reverse('blog:top')
     self.data = {
       'username': 'kinoko123@gmail.com',
       'password': 'kinopiko12'

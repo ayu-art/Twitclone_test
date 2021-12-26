@@ -3,7 +3,6 @@ from . import views
 
 app_name = 'accounts'
 urlpatterns = [
-  path('', views.TopView.as_view(), name='top'),
   path('data-input/', views.UserDataInput.as_view(), name='data-input'),
   path('data-confirm/', views.UserDataConfirm.as_view(), name='data-confirm'),
   path('data-save/', views.UserDataSave.as_view(), name='data-save'),
