@@ -1,11 +1,27 @@
-{% extends 'accounts/base.html' %}
+{% extends 'blog/base.html' %}
+{% load static %}
 
 {% block title %}トップページ{% endblock %}
 {% block subheader %}{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<h4 >ようこそ！<span style="color:dodgerblue;">{{ user.username }} </span>さん！</h4>
-<div class="ui divider"></div>
-{% endif %}
+<main class="bg-image">
+	<div class="ui container" style="min-height: 100vh;">
+		{% if user.is_authenticated %}
+		<h4>ようこそ！<span style="color:dodgerblue;">{{ user.username }}</span>さん！</h4>
+		{% endif %}
+			<div class="tweet">
+				{% for tweet in object_list %}
+				<div class="ui raised segment">
+					<p>{{ tweet.name.username }} {{ tweet.created_day|date:"Y/m/d H:i:s" }}</p>
+					<p>{{ tweet.text }}</p>
+					<div class="icons">
+						<i class="rocketchat icon"></i><i class="retweet icon"></i><i class="heart outline icon"></i><i class="trash alternate icon"></i>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		<a href="{% url 'blog:tweet' %}" class="ui blue button">ツイート</a>
+	</div>
+</main>
 {% endblock %}

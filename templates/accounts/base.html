@@ -5,16 +5,18 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
-  <link rel="icon" href="{% static '/images/twitter_icon.ico' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+  <link rel="icon" href="{% static 'accounts//images/twitter_icon.ico' %}">
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-  <div class="ui blue huge stackable inverted menu">
+  <div class="ui blue medium stackable inverted menu">
     <div class="container">
-      <h2 class="header item"><a href="{% url 'blog:top' %}">
+      <h3 class="header item" style="padding-left: 3em;"><a href="{% url 'blog:top' %}">
           投稿サイト
-      </a></h2>
+      </a></h3>
       {% block subheader %}<i class="item">サブ情報</i>{% endblock %}
     </div>
     <div class="right menu">
@@ -29,8 +31,7 @@
   </div>
 
   <div class="ui container" style="min-height: 100vh;">
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock %}
   </div>
 </body>
 </html>
