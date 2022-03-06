@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DeleteView
 from .form import TweetForm
 from .models import Post
 
@@ -12,6 +12,7 @@ class TopView(ListView):
 
   def get_queryset(self):
     return Post.objects.order_by('-created_day')
+
 
 class TweetView(CreateView, LoginRequiredMixin):
   form_class = TweetForm
@@ -24,3 +25,9 @@ class TweetView(CreateView, LoginRequiredMixin):
 
   def form_invalid(self, form):
     return render(self.request, 'blog/tweet.html', {'form': form})
+
+
+class TweetDelete(DeleteView):
+  template_name = None
+  model = Post
+  success_url = reverse_lazy('blog:top')
