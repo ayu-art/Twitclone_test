@@ -91,7 +91,7 @@ class FailSignUpTests(TestCase):
     self.assertEquals(self.response2.status_code, 200)
     form2 = self.response2.context.get('form')
     self.assertTrue(form2.errors)
-    self.assertTemplateUsed(self.response２, 'accounts/data_input.html')
+    self.assertTemplateUsed(self.response2, 'accounts/data_input.html')
 
   # 記入漏れがあるときの確認
   def test_empty_form(self):

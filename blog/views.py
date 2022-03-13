@@ -14,7 +14,7 @@ class TopView(ListView):
     return Post.objects.order_by('-created_day')
 
 
-class TweetView(CreateView, LoginRequiredMixin):
+class TweetView(LoginRequiredMixin, CreateView,):
   form_class = TweetForm
   template_name = 'blog/tweet.html'
   success_url = reverse_lazy('blog:top')
@@ -27,7 +27,6 @@ class TweetView(CreateView, LoginRequiredMixin):
     return render(self.request, 'blog/tweet.html', {'form': form})
 
 
-class TweetDelete(DeleteView):
-  template_name = None
+class TweetDelete(DeleteView, LoginRequiredMixin):
   model = Post
   success_url = reverse_lazy('blog:top')
