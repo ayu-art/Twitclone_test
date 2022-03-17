@@ -1,6 +1,6 @@
 from operator import index
 from django.contrib.auth import login
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse
 from accounts.models import User
 
@@ -22,10 +22,7 @@ class LoginTweetTests(TestCase):
     self.tweet_url = reverse('blog:tweet')
     self.login_url = reverse('accounts:login')
     self.user = User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
-    self.user_login_data = {
-      'username': 'kinoko123@gmail.com',
-      'password': 'kinopiko12'
-    }
+    self.login_user = self.client.login(username='kinoko123@gmail.com', password='kinopiko12')
     self.tweet_data = {
       'text': 'test1'
     }
@@ -35,7 +32,6 @@ class LoginTweetTests(TestCase):
     self.non_text_tweet_data = {
       'text': ''
     }
-    self.response_post = self.client.post(self.login_url, self.user_login_data)
     self.response_tweet = self.client.get(self.tweet_url)
     self.response_tweet_form = self.client.post(self.tweet_url, self.tweet_data)
     self.response_tweet_form2 = self.client.post(self.tweet_url, self.tweet_data2)
@@ -44,6 +40,7 @@ class LoginTweetTests(TestCase):
 
   # ログイン後にツイート画面に遷移し、記事の投稿ができるか
   def test_successful_tweet(self):
+    self.assertTrue(self.login_user)
     self.assertEquals(self.response_tweet.status_code, 200)
     self.assertTemplateUsed(self.response_tweet, 'blog/tweet.html')
     self.assertRedirects(self.response_tweet_form, self.top_url, status_code=302, target_status_code=200)
