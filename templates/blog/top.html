@@ -13,8 +13,8 @@
 			<div class="tweet">
 				{% for tweet in object_list %}
 				<div class="ui raised segment">
-					<p>{{ tweet.name.username }} 　{{ tweet.created_day|date:"Y/m/d H:i:s" }}</p>
-					<p>{{ tweet.text }}</p>
+					<p>{{ tweet.name.username }} 　{{ tweet.created_at|date:"Y/m/d H:i:s" }}</p>
+					<p>{{ tweet.text | linebreaksbr }}</p>
 					<div class="icons">
 						<i class="valid comment alternate outline icon"></i><i class="valid retweet icon"></i><i class="valid heart outline icon"></i>
 						{% if user.username == tweet.name.username %}

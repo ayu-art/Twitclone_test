@@ -7,15 +7,12 @@
 	<div class="ui content">
 		<form class="ui form" action="" method="POST">
 			{% csrf_token %}
-			{% for field in form %}
 			<div class="field tweet">
 				<label>ツイート</label>
-				{{ field }}
+				{{ form.text }}
 			</div>
-			{% endfor %}
-			{% for error in form.non_field_errors %}
-			<div class="ui error message">{{ error }}</div>
-			{% endfor %}
+			<div class="ui error message">{{ form.non_field_errors }}</div>
+			<div class="ui error message">{{ form.text.errors }}</div>
 			<a href="{% url 'blog:top' %}" class="ui button">キャンセル</a>
 			<button class="ui right floated blue button" type="submit">ツイート</button>
 		</form>
