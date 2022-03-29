@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+from django.conf import settings
 from django.contrib.auth import login
 from django.test import TestCase
 from django.urls import reverse
@@ -6,8 +8,8 @@ from accounts.models import User
 class NonLoginTweetTests(TestCase):
   def setUp(self):
     self.tweet_url = reverse('blog:tweet')
-    self.login_url = reverse('accounts:login')
-    self.login_redirect_url = '/accounts/login/?next=/blog/tweet/'
+    self.login_url = reverse(settings.LOGIN_URL)
+    self.login_redirect_url = f"{reverse(settings.LOGIN_URL)}?{urlencode({'next': self.tweet_url})}"
 
   # 未ログイン時にtweetviewにアクセスされるとログインページにリダイレクトされるか
   def test_non_login_tweet(self):
@@ -19,7 +21,7 @@ class LoginTweetTests(TestCase):
   def setUp(self):
     self.top_url = reverse('blog:top')
     self.tweet_url = reverse('blog:tweet')
-    self.login_url = reverse('accounts:login')
+    self.login_url = reverse(settings.LOGIN_URL)
     self.user = User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
     self.login_user = self.client.login(username='kinoko123@gmail.com', password='kinopiko12')
     self.tweet_data = {
@@ -51,6 +53,8 @@ class LoginTweetTests(TestCase):
     form = self.response_no_text_tweet.context.get('form')
     self.assertTrue(form.errors)
     self.assertTemplateUsed(self.response_no_text_tweet, 'blog/tweet.html')
+    self.response_top = self.client.get(self.top_url)
+    self.assertQuerysetEqual(self.response_top.context['object_list'], [])
 
   # ツイート後にcontextに名前・テキスト・時間が登録されているか。
   def test_successful_object_list(self):
@@ -92,6 +96,7 @@ class TweetDeleteTests(TestCase):
     self.response_top = self.client.get(self.top_url)    
     self.assertRedirects(self.response_delete, self.top_url, status_code=302, target_status_code=200)
     self.assertNotContains(self.response_top, 'test1')
+    self.assertQuerysetEqual(self.response_top.context['object_list'], [])
 
   # 存在しないツイートを削除するとエラーがでるか
   def test_failure_not_exist_tweet(self):
@@ -111,3 +116,4 @@ class TweetDeleteTests(TestCase):
     self.response_top = self.client.get(self.top_url)
     self.assertEqual(self.response_delete.status_code, 403)
     self.assertContains(self.response_top, 'test1')  
+    self.assertQuerysetEqual(self.response_top.context['object_list'], ['<Post: test1>'],)
