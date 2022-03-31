@@ -22,8 +22,9 @@ class LoginTweetTests(TestCase):
     self.top_url = reverse('blog:top')
     self.tweet_url = reverse('blog:tweet')
     self.login_url = reverse(settings.LOGIN_URL)
-    self.user = User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
+    User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
     self.login_user = self.client.login(username='kinoko123@gmail.com', password='kinopiko12')
+    self.user = User.objects.get(email='kinoko123@gmail.com')
     self.tweet_data = {
       'text': 'test1'
     }
@@ -53,25 +54,19 @@ class LoginTweetTests(TestCase):
     form = self.response_no_text_tweet.context.get('form')
     self.assertTrue(form.errors)
     self.assertTemplateUsed(self.response_no_text_tweet, 'blog/tweet.html')
-    self.response_top = self.client.get(self.top_url)
-    self.assertQuerysetEqual(self.response_top.context['object_list'], [])
+    self.assertFalse(self.user.post_set.exists())
 
   # ツイート後にcontextに名前・テキスト・時間が登録されているか。
   def test_successful_object_list(self):
     self.response_tweet_form = self.client.post(self.tweet_url, self.tweet_data)
     self.response_tweet_form2 = self.client.post(self.tweet_url, self.tweet_data2)
-    self.response_top = self.client.get(self.top_url)
-    self.assertQuerysetEqual(self.response_top.context['object_list'], ['<Post: test1>', '<Post: test2>'], ordered=False)
-    self.response1 = self.response_top.context['object_list'][1]
-    self.assertEqual(self.response1.name.username, 'kinoko')
-    self.assertIsNotNone(self.response1.text)
-    self.assertIsNotNone(self.response1.created_at)
+    self.assertQuerysetEqual(self.user.post_set.all(), ['<Post: test1>', '<Post: test2>'], ordered=False)
+    self.assertTrue(self.user.post_set.filter(text='test1').exists())
 
   # 長いツイートを投稿してもデータベースに登録されない確認
   def test_failure_long_tweet(self):
     self.response_tweet_form = self.client.post(self.tweet_url, self.long_tweet_data)
-    self.response_top = self.client.get(self.top_url)
-    self.assertQuerysetEqual(self.response_top.context['object_list'], [])
+    self.assertFalse(self.user.post_set.exists())
 
 
 class TweetDeleteTests(TestCase):
@@ -79,9 +74,10 @@ class TweetDeleteTests(TestCase):
     self.top_url = reverse('blog:top')
     self.tweet_url = reverse('blog:tweet')
     self.login_url = reverse('accounts:login')
-    self.user = User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
-    self.user2 = User.objects.create_user('kinopiko', 'kinopiko123@gmail.com', 'kinoko04')
+    User.objects.create_user('kinoko', 'kinoko123@gmail.com', 'kinopiko12')
+    User.objects.create_user('kinopiko', 'kinopiko123@gmail.com', 'kinoko04')
     self.login_user = self.client.login(username='kinoko123@gmail.com', password='kinopiko12')
+    self.user = User.objects.get(email='kinoko123@gmail.com')
     self.tweet_data = {
       'text': 'test1'
     }
@@ -95,8 +91,8 @@ class TweetDeleteTests(TestCase):
     self.response_delete = self.client.post(self.delete_url)
     self.response_top = self.client.get(self.top_url)    
     self.assertRedirects(self.response_delete, self.top_url, status_code=302, target_status_code=200)
+    self.assertFalse(self.user.post_set.exists())
     self.assertNotContains(self.response_top, 'test1')
-    self.assertQuerysetEqual(self.response_top.context['object_list'], [])
 
   # 存在しないツイートを削除するとエラーがでるか
   def test_failure_not_exist_tweet(self):
@@ -115,5 +111,5 @@ class TweetDeleteTests(TestCase):
     self.response_delete = self.client.post(self.delete_url)
     self.response_top = self.client.get(self.top_url)
     self.assertEqual(self.response_delete.status_code, 403)
+    self.assertQuerysetEqual(self.user.post_set.all(), ['<Post: test1>'])
     self.assertContains(self.response_top, 'test1')  
-    self.assertQuerysetEqual(self.response_top.context['object_list'], ['<Post: test1>'],)
