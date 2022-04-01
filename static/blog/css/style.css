@@ -1,0 +1,60 @@
+@charset "utf-8";
+
+/* base.html */
+div.ui.blue.medium.stackable.inverted.menu {
+  margin-bottom: 0%;
+}
+
+/* top.html */
+main.bg-image {
+  background-color: #e6f5fa;
+  background-size: cover;
+}
+
+h4 {
+  padding-top: 1em;
+}
+
+a.delete-modal-button {
+  color: black;
+}
+
+i.icon {
+  font-size: 20px;
+  width: 45px;
+}
+
+i.valid.icon:hover, i.valid.icon:focus, i.valid.icon:active {
+  -webkit-transform: scale(1.3);
+  transform: scale(1.3);
+  cursor: pointer;
+}
+
+a.ui.blue.button{
+  position: fixed;
+  bottom: 60px;
+  right: 100px;
+  padding: 15px 30px;
+}
+
+a.ui.blue.button:hover, a.ui.blue.button:focus, a.ui.blue.button:active {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+button.delete-modal-button {
+  border: none;
+  background: none;
+  outline: none;
+  padding: 0px;
+}
+
+/* tweet.html */
+div.field.tweet {
+  padding-top: 20px;
+}
+
+div.button-a, div.button-b {
+  float: left;
+}

@@ -1,13 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
-from ..views import TopView, ProfileView, UserDataConfirm, UserDataInput, UserDataSave, LoginView, LogoutConfirmView, LogoutView
+from ..views import ProfileView, UserDataConfirm, UserDataInput, UserDataSave, LoginView, LogoutConfirmView, LogoutView
 
 class UrlTests(TestCase):
-  # top画面へのurlでアクセスする時のテスト
-  def test_top_url(self):
-    view = resolve('/accounts/')
-    self.assertEqual(view.func.view_class, TopView)
-
   # ユーザー登録フォームへアクセスするテスト
   def test_data_input_url(self):
     view = resolve('/accounts/data-input/')

@@ -27,12 +27,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
+    'blog.apps.BlogConfig',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_URL = 'accounts:login'
-LOGIN_REDIRECT_URL = 'accounts:top'
+LOGIN_REDIRECT_URL = 'blog:top'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

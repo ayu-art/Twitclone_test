@@ -8,3 +8,6 @@ class User(AbstractUser):
   place = models.CharField(verbose_name='住んでいる場所', max_length=50, help_text='50文字以内です', blank=True, null=False)
   USERNAME_FIELD = 'email'
   REQUIRED_FIELDS = []
+
+  def __str__(self):
+    return self.email

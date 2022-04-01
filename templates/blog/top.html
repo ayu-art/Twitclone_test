@@ -1,0 +1,53 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}トップページ{% endblock %}
+{% block subheader %}{% endblock %}
+
+{% block content %}
+<main class="bg-image">
+	<div class="ui container" style="min-height: 100vh;">
+		{% if user.is_authenticated %}
+		<h4>ようこそ！<span style="color:dodgerblue;">{{ user.username }}</span>さん！</h4>
+		{% endif %}
+			<div class="tweet">
+				{% for tweet in object_list %}
+				<div class="ui raised segment">
+					<p>{{ tweet.name.username }} 　{{ tweet.created_at|date:"Y/m/d H:i:s" }}</p>
+					<p>{{ tweet.text | linebreaksbr }}</p>
+					<div class="icons">
+						<i class="valid comment alternate outline icon"></i><i class="valid retweet icon"></i><i class="valid heart outline icon"></i>
+						{% if user.username == tweet.name.username %}
+						<button type="button" class="delete-modal-button" data-deleteurl="{% url 'blog:tweet-delete' tweet.pk %}"><i class="valid trash alternate outline icon"></i></a>
+						{% endif %}
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		<a href="{% url 'blog:tweet' %}" class="ui blue button">ツイート</a>
+	</div>
+
+	<div class="ui small modal">
+		<div class="header">ツイートの削除</div>
+		<div class="content">
+			<p>この投稿を削除してもよろしいですか？</p>
+		</div>
+		<div class="actions">
+			<form action="" method="POST" id="delete-form">{% csrf_token %}
+					<button type="button" class="ui cancel button">キャンセル</button>
+					<button type="submit" class="ui red button">削除</button>
+			</form>
+		</div>
+
+	<script>
+		const deleteForm = document.getElementById('delete-form');
+		const deleteModalButtons = document.getElementsByClassName('delete-modal-button');
+		for (const button of deleteModalButtons) {
+			button.addEventListener('click', () => {
+				$('.ui.small.modal').modal('show');
+				deleteForm.action = button.dataset.deleteurl;
+			});
+		}
+	</script>
+</main>
+{% endblock %}

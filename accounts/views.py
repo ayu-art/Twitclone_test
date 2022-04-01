@@ -9,9 +9,6 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-class TopView(TemplateView):
-  template_name = 'accounts/top.html'
-
 
 # ユーザ情報入力view
 class UserDataInput(FormView):
@@ -37,7 +34,7 @@ class UserDataConfirm(FormView):
 # 登録ボタンが押されたときにユーザデータ保存。
 class UserDataSave(FormView):
   form_class = SignUpForm
-  success_url = reverse_lazy('accounts:top')
+  success_url = reverse_lazy('blog:top')
 
   def form_valid(self, form):
     form.save()
